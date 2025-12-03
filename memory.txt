@@ -1,0 +1,3 @@
+家,家族がいる場所
+白米,日本人の主食
+人工知能,Artificial Intelligence, 賢いロボット
