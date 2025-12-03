@@ -9,7 +9,10 @@ damages = np.random.normal(loc=50, scale=10, size=1000)
 
 print(f"MAX: {np.max(damages)}\nMIN: {np.min(damages)}")
 
-criticals = damages[damages > 60]
-print(f"CRITICAL: {len(criticals)}")
+# criticals = damages[damages > 60]
+# print(f"CRITICAL: {len(criticals)}")
+# ↑はメモリを食うのでTrueの数だけ数えるコード1行に変える
+count = np.sum(damages > 60)
+print(f"CRITICAL: {count}")
 
 print(f"AVERAGE: {np.mean(damages)}")
