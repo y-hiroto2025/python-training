@@ -1,64 +1,55 @@
 # 簡易RPGバトルシミュレーター
 import random
 
-class Player:
+# 改善点１：DRY。同じものは繰り返してはいけない。複数のクラスが共通のものを持つならば、継承を利用する。
 
-    hp = 100
-
-    def __init__(self, name):
+# base class
+class Character:
+    def __init__(self, name, hp = 100):
         self.name = name
+        self.hp = hp
+        self.max_hp = hp 
     
     def attack(self, target):
-        strength = random.randrange(5, 20)
+        # targetに5~20のダメージを与える
+        damage = random.randint(5, 20)
 
-        if target.hp - strength < 0:
-            print(f"{self.name: >6}は{target.name: >6}に{strength}のダメージを与えた! {target.name: >6}: HP{target.hp} => 0")
-        else:
-            print(f"{self.name: >6}は{target.name: >6}に{strength}のダメージを与えた! {target.name: >6}: HP{target.hp} => {target.hp - strength}")
+        target.hp -= damage
 
-        target.hp -= strength
-    
-    def print_spec(self):
-        print(f"NAME: {self.name: >6}\nHP: {self.hp}")
+        # HPが0にならないように補正
+        target.hp = max(target.hp, 0)
 
+        print(f"{self.name: >6} の攻撃  {target.name: >6} に {damage} のダメージ")
+        print(f"    {target.name: >6} HP: {target.hp}/{target.max_hp}")
 
-class Enemy:
-
-    hp = 100
-
-    def __init__(self, name):
-        self.name = name
-
-    def attack(self, target):
-        strength = random.randrange(5, 20)
-        
-        if target.hp - strength < 0:
-            print(f"{self.name: >6}は{target.name: >6}に{strength}のダメージを与えた! {target.name: >6}: HP{target.hp} => 0")
-        else:
-            print(f"{self.name: >6}は{target.name: >6}に{strength}のダメージを与えた! {target.name: >6}: HP{target.hp} => {target.hp - strength}")
-
-        target.hp -= strength
-
-    def print_spec(self):
-        print(f"NAME: {self.name: >6}\nHP: {self.hp}")
+    def is_alive(self):
+        return self.hp > 0
 
 
-player_A = Player("yamada")
-monstar = Enemy("Slime")
+# sub class
+class Player(Character):
+    pass
+
+class Enemy(Character):
+    pass
+
+
+player = Player("Yamada")
+monster = Enemy("Slime")
+
+print("--- BATTLE START ---")
 
 while True:
-    player_A.attack(monstar)
-    if monstar.hp <= 0:
-        print(f"{player_A.name: >6}は{monstar.name: >6}を倒した")
+    # プレイヤーのターン
+    player.attack(monster)
+    if not monster.is_alive():
+        print(f"\n  >>{player.name}は{monster.name}を倒した")
         break
 
-    monstar.attack(player_A)
-    if player_A.hp <= 0:
-        print(f"{player_A.name: >6}は{monstar.name: >6}に倒された")
+    # モンスターのターン
+    monster.attack(player)
+    if not player.is_alive():
+        print(f"\n  >>{player.name}は{monster.name}に倒された")
         break
 
-    print()
-
-print()
-player_A.print_spec()
-monstar.print_spec()
+    print("=" * 40)
