@@ -1,7 +1,7 @@
 # 簡易RPGバトルシミュレーター
 import random
 
-# 改善点１：DRY。同じものは繰り返してはいけない。複数のクラスが共通のものを持つならば、継承を利用する。
+# 改善点：DRY。同じものは繰り返してはいけない。複数のクラスが共通のものを持つならば、継承を利用する。
 
 # base class
 class Character:
@@ -12,21 +12,24 @@ class Character:
     
     def attack(self, target):
         # targetに5~20のダメージを与える
+        # 改善点：5~20ならば、randrange(5, 21) or randint(5, 20)
         damage = random.randint(5, 20)
 
         target.hp -= damage
 
-        # HPが0にならないように補正
+        # 改善点：max関数を使って、HPが0にならないように補正
         target.hp = max(target.hp, 0)
 
         print(f"{self.name: >6} の攻撃  {target.name: >6} に {damage} のダメージ")
         print(f"    {target.name: >6} HP: {target.hp}/{target.max_hp}")
 
+        # 改善点：生存判定の関数を作って、倒れたかどうかの判定に使う
     def is_alive(self):
         return self.hp > 0
 
 
 # sub class
+# 内容はまた今度書く
 class Player(Character):
     pass
 
