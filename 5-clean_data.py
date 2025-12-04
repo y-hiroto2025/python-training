@@ -18,3 +18,7 @@ print(user_names)
 
 cleaned_log_data = re.sub(r"\[\w+\]", "", log_data)
 print(cleaned_log_data)
+
+# 改善点：タグ内に記号が含まれていると対応できない
+cleaned_log_data = re.sub(r"\[.*?\]")
+# \[ => [を探す。.*? => 中身は何でもいい。\] => ]を探す
