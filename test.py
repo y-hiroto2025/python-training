@@ -1,7 +1,16 @@
-my_dict = {"a": "sa", "b": "bv"}
+import numpy as np
 
-with open("memory.txt", "a", encoding="utf-8") as f:
-    my_dict_keys = my_dict.keys()
-    for key in my_dict_keys:
-        print(key, my_dict[key])
-        f.write(f"{key},{my_dict[key]}\n")
+pr = np.array([[-1,3],
+               [1,-2]])
+a = np.array([[13,-30],
+              [5,-12]])
+p = np.array([[2,3],
+              [1,1]])
+
+
+def diagonalize(A, P):
+    P_reverse = np.linalg.inv(P)
+
+    return np.dot(np.dot(P_reverse, A), P)
+
+print(diagonalize(A=a, P=p))
