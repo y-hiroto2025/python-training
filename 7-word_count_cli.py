@@ -1,4 +1,5 @@
 import os
+import re
 
 def main():
     # ユーザーのファイルパス入力
@@ -18,10 +19,12 @@ def main():
     for line in lines:
         # 文字列の前処理
         line = line.strip().lower()
-        line = line.replace(",", "").replace(".", "").split()
+        line = re.sub(r"([^a-z0-9\s])", "", line) # 0~9, a~zと空白、出ないものを削除する
+
+        words = line.split()
 
         # 文字の出現回数をカウント
-        for word in line:
+        for word in words:
             if word not in words_dic:
                 words_dic[word] = 1
             else:
